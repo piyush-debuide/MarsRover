@@ -1,10 +1,10 @@
-import { ILocation } from "./type";
+import { CompassDirections, ILocation } from "./type";
 
 export default class Rover {
     private location: ILocation;
-    private direction: string;
-    private compassDirections = ['N', 'E', 'S', 'W'];
-    constructor(location: ILocation, direction: string) {
+    private direction: CompassDirections;
+    private compassDirections = [CompassDirections.N, CompassDirections.E, CompassDirections.S, CompassDirections.W];
+    constructor(location: ILocation, direction: CompassDirections) {
         this.location = {...location};
         this.direction = direction;
     }

@@ -1,79 +1,87 @@
 import Rover from "./rover"
-import { ILocation } from "./type"
+import { CompassDirections, ILocation } from "./type"
 
 describe('Position', () => {
 
     const roverLocation: ILocation = {x: 2, y: 3}
 
-    it(`rotateLeft - should return 'W' if rover's direction is N`, () => {
-        const rover = new Rover(roverLocation, 'N')
+    const rotateLeft = [
+        {
+            for: CompassDirections.N,
+            expect: CompassDirections.W
+        },
+        {
+            for: CompassDirections.W,
+            expect: CompassDirections.S
+        },
+        {
+            for: CompassDirections.S,
+            expect: CompassDirections.E
+        },
+        {
+            for: CompassDirections.E,
+            expect: CompassDirections.N
+        }
+    ]
+
+    rotateLeft.forEach((testItem) => it(`rotateLeft - should return ${testItem.expect} if rover's direction is ${testItem.for}`, () => {
+        const rover = new Rover(roverLocation, testItem.for)
         rover.rotateLeft()
-        expect(rover.getDirection()).toEqual('W')
-    })
+        expect(rover.getDirection()).toEqual(testItem.expect)
+    }))
 
-    it(`rotateLeft- should return 'S' if rover's direction is W`, () => {
-        const rover = new Rover(roverLocation, 'W')
-        rover.rotateLeft()
-        expect(rover.getDirection()).toEqual('S')
-    })
+    const rotateRight = [
+        {
+            for: CompassDirections.W,
+            expect: CompassDirections.N
+        },
+        {
+            for: CompassDirections.N,
+            expect: CompassDirections.E
+        },
+        {
+            for: CompassDirections.E,
+            expect: CompassDirections.S
+        },
+        {
+            for: CompassDirections.S,
+            expect: CompassDirections.W
+        }
+    ]
 
-    it(`rotateLeft- should return 'E' if rover's direction is S`, () => {
-        const rover = new Rover(roverLocation, 'S')
-        rover.rotateLeft()
-        expect(rover.getDirection()).toEqual('E')
-    })
-
-    it(`rotateLeft- should return 'N' if rover's direction is E`, () => {
-        const rover = new Rover(roverLocation, 'E')
-        rover.rotateLeft()
-        expect(rover.getDirection()).toEqual('N')
-    })
-
-    it(`rotateRight- should return 'N' if rover's direction is W`, () => {
-        const rover = new Rover(roverLocation, 'W')
+    rotateRight.forEach((testItem) => it(`rotateRight- should return ${testItem.expect} if rover's direction is ${testItem.for}`, () => {
+        const rover = new Rover(roverLocation, testItem.for)
         rover.rotateRight()
-        expect(rover.getDirection()).toEqual('N')
-    })
+        expect(rover.getDirection()).toEqual(testItem.expect)
+    }))
 
-    it(`rotateRight- should return 'E' if rover's direction is N`, () => {
-        const rover = new Rover(roverLocation, 'N')
-        rover.rotateRight()
-        expect(rover.getDirection()).toEqual('E')
-    })
 
-    it(`rotateRight- should return 'S' if rover's direction is E`, () => {
-        const rover = new Rover(roverLocation, 'E')
-        rover.rotateRight()
-        expect(rover.getDirection()).toEqual('S')
-    })
+    const move = [
+        {
+            for: CompassDirections.N,
+            do: 'increment y',
+            expect: {x: 2, y: 4}
+        },
+        {
+            for: CompassDirections.E,
+            do: 'increment x',
+            expect: {x: 3, y: 3}
+        },
+        {
+            for: CompassDirections.S,
+            do: 'decrement y',
+            expect: {x: 2, y: 2}
+        },
+        {
+            for: CompassDirections.W,
+            do: 'decrement x',
+            expect: {x: 1, y: 3}
+        },
+    ]
 
-    it(`rotateRight- should return 'W' if rover's direction is S`, () => {
-        const rover = new Rover(roverLocation, 'S')
-        rover.rotateRight()
-        expect(rover.getDirection()).toEqual('W')
-    })
-
-    it(`move - should increment y coordinate by 1 if current direction is N`, () => {
-        const rover = new Rover(roverLocation, 'N')
+    move.forEach((testItem) => it(`move - should ${testItem.do} coordinate by 1 if current direction is ${testItem.for}`, () => {
+        const rover = new Rover(roverLocation, testItem.for)
         rover.move()
-        expect(rover.getLocation()).toEqual({x: 2, y: 4});
-    })
-
-    it(`move - should increment x coordinate by 1 if current direction is E`, () => {
-        const rover = new Rover(roverLocation, 'E')
-        rover.move()
-        expect(rover.getLocation()).toEqual({x: 3, y: 3});
-    })
-
-    it(`move - should decrement y coordinate by 1 if current direction is S`, () => {
-        const rover = new Rover(roverLocation, 'S')
-        rover.move()
-        expect(rover.getLocation()).toEqual({x: 2, y: 2});
-    })
-
-    it(`move - should decrement x coordinate by 1 if current direction is W`, () => {
-        const rover = new Rover(roverLocation, 'W')
-        rover.move()
-        expect(rover.getLocation()).toEqual({x: 1, y: 3});
-    })
+        expect(rover.getLocation()).toEqual(testItem.expect);
+    }))
 })
