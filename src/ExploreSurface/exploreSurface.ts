@@ -1,4 +1,5 @@
 import Rover from "../Rover/rover";
+import { CompassDirections } from "../Rover/type";
 import { ICommands, ISurface } from "./type";
 
 export default class ExploreSurface {
@@ -23,7 +24,10 @@ export default class ExploreSurface {
     execute(instruction: string) {
         const instructions = [...instruction]
         instructions.forEach((index: string) => {
-            this.commands[index]()
+            if(!this.commands[index as keyof ICommands]) {
+                throw new Error(`Invalid Command ${index}`)
+            }
+            this.commands[index as keyof ICommands]()
         })
     }
 
@@ -35,3 +39,6 @@ export default class ExploreSurface {
         }
     }
 }
+
+const rover = new Rover({x:3, y:4}, CompassDirections.N)
+const explore = new ExploreSurface({horizontalLength: 10, verticalLength: 10}, rover)

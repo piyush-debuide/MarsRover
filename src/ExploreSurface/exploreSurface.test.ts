@@ -34,6 +34,13 @@ describe('Commands', () => {
         expect(rover.getDirection()).toEqual(CompassDirections.W)
         expect(rover.getLocation()).toEqual({x: 4, y: 5})
     })
+
+    it('Should throw error if invalid command', () => {
+        const invalidCommand = 'N'
+        const rover = new Rover(roverLocation, CompassDirections.W)
+        const exploreSurface = new ExploreSurface(surface, rover)
+        expect(() => exploreSurface.execute(`LMRM${invalidCommand}`)).toThrow(`Invalid Command ${invalidCommand}`)
+    })
 })
 
 describe('Validation', () => {
